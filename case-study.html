@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chewy — Case Study</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink: #f5f3ee;
+      --ink-2: #a0a09a;
+      --ink-3: #5a5a56;
+      --ink-4: #3a3a38;
+      --paper: #0e0e0c;
+      --paper-2: #1a1a18;
+      --paper-3: #2a2a28;
+      --accent: #f00078;
+      --accent-bg: #1a0010;
+      --accent-mid: #3a0020;
+      --serif: 'DM Serif Display', Georgia, serif;
+      --sans: 'DM Sans', system-ui, sans-serif;
+
+      /* Diamond phase colours */
+      --discover: #f00078;
+      --define: #c4005f;
+      --develop: #8a0045;
+      --deliver: #f5f3ee;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--sans);
+      background: var(--paper);
+      color: var(--ink);
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: #0e0e0c; border-bottom: 1px solid var(--paper-2);
+      padding: 0 2rem; display: flex; align-items: center;
+      justify-content: space-between; height: 56px;
+    }
+    .nav-logo {
+      font-family: var(--serif); font-size: 1.3rem;
+      color: var(--accent); text-decoration: none; letter-spacing: -0.02em;
+    }
+    .nav-links { display: flex; gap: 1.5rem; list-style: none; }
+    .nav-links a {
+      font-size: 0.75rem; font-weight: 400; color: #4a4a46;
+      text-decoration: none; letter-spacing: 0.08em; text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--accent); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh; display: flex; flex-direction: column;
+      justify-content: center; padding: 120px 2rem 4rem;
+      max-width: 860px; margin: 0 auto;
+    }
+    .hero-eyebrow {
+      font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 1.5rem; opacity: 0;
+      animation: fadeUp 0.6s 0.1s ease forwards;
+    }
+    .hero-title {
+      font-family: var(--serif);
+      font-size: clamp(3rem, 8vw, 6rem);
+      line-height: 1.0; letter-spacing: -0.03em; color: #f5f3ee;
+      margin-bottom: 1.5rem; opacity: 0;
+      animation: fadeUp 0.6s 0.2s ease forwards;
+    }
+    .hero-title em { font-style: italic; color: var(--accent); }
+    .hero-desc {
+      font-size: 1.05rem; font-weight: 300; color: #8a8a84;
+      max-width: 520px; line-height: 1.75; margin-bottom: 3rem;
+      opacity: 0; animation: fadeUp 0.6s 0.3s ease forwards;
+    }
+    .hero-meta {
+      display: flex; gap: 2rem; flex-wrap: wrap; opacity: 0;
+      animation: fadeUp 0.6s 0.4s ease forwards;
+    }
+    .hero-meta-item { }
+    .hero-meta-label {
+      font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase;
+      color: #2e2e2c; margin-bottom: 4px;
+    }
+    .hero-meta-value { font-size: 0.875rem; color: #8a8a84; font-weight: 300; }
+
+    /* ── DIAMOND DIAGRAM ── */
+    .diamond-section {
+      padding: 4rem 2rem; max-width: 860px; margin: 0 auto;
+      opacity: 0; animation: fadeUp 0.6s 0.5s ease forwards;
+    }
+    .diamond-label {
+      font-size: 0.7rem; font-weight: 500; letter-spacing: 0.1em;
+      text-transform: uppercase; color: #4a4a46; margin-bottom: 2rem;
+    }
+    .diamond-track {
+      display: flex; align-items: center; gap: 0; position: relative;
+    }
+    .diamond-shape {
+      flex: 1; display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      position: relative; cursor: pointer;
+    }
+    .diamond-shape svg { width: 100%; max-width: 180px; transition: transform 0.2s; }
+    .diamond-shape:hover svg { transform: scale(1.04); }
+    .diamond-shape-label {
+      font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase;
+      color: #4a4a46; margin-top: 10px; text-align: center;
+    }
+    .diamond-shape-num {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      font-family: var(--serif); font-size: 1.4rem; color: white;
+      font-style: italic; pointer-events: none;
+    }
+    .diamond-connector {
+      width: 32px; height: 2px; background: #2a2a28; flex-shrink: 0;
+    }
+
+    /* ── SCROLL HINT ── */
+    .scroll-hint {
+      max-width: 860px; margin: 0 auto; padding: 0 2rem 3rem;
+      display: flex; align-items: center; gap: 10px;
+      font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase;
+      color: #2e2e2c;
+    }
+    .scroll-arrow { animation: nudge 1.6s ease-in-out infinite; display: inline-block; }
+    @keyframes nudge { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(6px); } }
+
+    /* ── HORIZONTAL SCROLL TRACK ── */
+    .phases-outer {
+      width: 100vw; overflow-x: scroll; overflow-y: visible;
+      scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;
+      scrollbar-width: none; cursor: grab;
+    }
+    .phases-outer::-webkit-scrollbar { display: none; }
+    .phases-outer.grabbing { cursor: grabbing; }
+    .phases-track {
+      display: flex; width: max-content;
+      padding: 0 calc((100vw - 860px) / 2);
+    }
+
+    /* ── PHASE PANEL ── */
+    .phase {
+      width: 100vw; max-width: 860px; flex-shrink: 0;
+      scroll-snap-align: start; padding: 3rem 2rem 6rem;
+      display: flex; flex-direction: column; gap: 2.5rem;
+    }
+
+    .phase-header { display: flex; align-items: baseline; gap: 16px; }
+    .phase-number {
+      font-family: var(--serif); font-size: 4rem; line-height: 1;
+      letter-spacing: -0.04em; font-style: italic; flex-shrink: 0;
+      opacity: 0.12;
+    }
+    .phase-title-block { }
+    .phase-tag {
+      font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase;
+      margin-bottom: 4px; font-weight: 500;
+    }
+    .phase-title {
+      font-family: var(--serif); font-size: clamp(1.8rem, 4vw, 2.8rem);
+      line-height: 1.1; letter-spacing: -0.02em; color: #f5f3ee;
+    }
+    .phase-title em { font-style: italic; }
+
+    .phase-body { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: #1a1a18; border: 1px solid var(--paper-2); border-radius: 12px; overflow: hidden; }
+    .phase-cell { background: #0e0e0c; padding: 1.5rem; }
+    .phase-cell-label {
+      font-size: 0.65rem; font-weight: 500; letter-spacing: 0.1em;
+      text-transform: uppercase; color: #4a4a46; margin-bottom: 0.75rem;
+    }
+    .phase-cell-content {
+      font-size: 0.875rem; font-weight: 300; color: #8a8a84; line-height: 1.7;
+    }
+    .phase-cell.wide { grid-column: span 2; }
+
+    .phase-quote {
+      border-left: 2px solid; padding: 1rem 1.5rem;
+      font-family: var(--serif); font-size: 1.15rem; font-style: italic;
+      color: #8a8a84; line-height: 1.6;
+    }
+
+    .phase-pills { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 0.75rem; }
+    .phase-pill {
+      font-size: 0.68rem; letter-spacing: 0.04em; padding: 4px 10px;
+      border-radius: 100px; border: 1px solid #2a2a28;
+      color: #4a4a46; background: transparent;
+    }
+
+    /* Watermark diamond */
+    .phase { position: relative; overflow: hidden; }
+    .phase-watermark {
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 70%; opacity: 0.035; pointer-events: none;
+      z-index: 0;
+    }
+    .phase > *:not(.phase-watermark) { position: relative; z-index: 1; }
+
+    /* Phase accent colours */
+    .phase-1 .phase-number { color: var(--discover); }
+    .phase-1 .phase-tag { color: var(--discover); }
+    .phase-1 .phase-quote { border-color: var(--discover); }
+
+    .phase-2 .phase-number { color: var(--define); }
+    .phase-2 .phase-tag { color: var(--define); }
+    .phase-2 .phase-quote { border-color: var(--define); }
+
+    .phase-3 .phase-number { color: var(--develop); }
+    .phase-3 .phase-tag { color: var(--develop); }
+    .phase-3 .phase-quote { border-color: var(--develop); }
+
+    .phase-4 .phase-number { color: var(--deliver); }
+    .phase-4 .phase-tag { color: var(--deliver); }
+    .phase-4 .phase-quote { border-color: var(--deliver); }
+
+    /* ── PROGRESS DOTS ── */
+    .progress-dots {
+      position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%);
+      display: flex; gap: 8px; z-index: 50;
+    }
+    .dot {
+      width: 6px; height: 6px; border-radius: 100px;
+      background: #2a2a28; transition: all 0.3s;
+      cursor: pointer;
+    }
+    .dot.active { width: 20px; background: var(--accent); }
+
+    /* ── DIVIDER ── */
+    .page-divider {
+      max-width: 860px; margin: 0 auto; padding: 0 2rem;
+      border-top: 1px solid #2a2a28;
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      nav { padding: 0 1rem; }
+      .hero { padding: 100px 1rem 3rem; }
+      .diamond-section { padding: 2rem 1rem; }
+      .phase { padding: 2rem 1rem 5rem; }
+      .phase-body { grid-template-columns: 1fr; }
+      .phase-cell.wide { grid-column: span 1; }
+      .phases-track { padding: 0; }
+      .phase { width: 100vw; max-width: 100vw; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="nav-logo">chewy</a>
+    <ul class="nav-links">
+      <li><a href="#">Dev log →</a></li>
+      <li><a href="#">Design kit →</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <p class="hero-eyebrow">Case study · 2025</p>
+    <h1 class="hero-title">Tracking meals<br>should feel <em>effortless.</em></h1>
+    <p class="hero-desc">
+      A chat-first calorie tracker built around one idea: logging what you eat should be as easy as describing it. This is the end-to-end story of how Chewy was designed and built.
+    </p>
+    <div class="hero-meta">
+      <div class="hero-meta-item">
+        <p class="hero-meta-label">Role</p>
+        <p class="hero-meta-value">Product, Design, Engineering</p>
+      </div>
+      <div class="hero-meta-item">
+        <p class="hero-meta-label">Stack</p>
+        <p class="hero-meta-value">React Native · Supabase · Node</p>
+      </div>
+      <div class="hero-meta-item">
+        <p class="hero-meta-label">Timeline</p>
+        <p class="hero-meta-value">2025 — ongoing</p>
+      </div>
+      <div class="hero-meta-item">
+        <p class="hero-meta-label">Type</p>
+        <p class="hero-meta-value">Solo end-to-end project</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-divider"></div>
+
+  <!-- DOUBLE DIAMOND DIAGRAM -->
+  <div class="diamond-section">
+    <p class="diamond-label">The double diamond</p>
+    <div class="diamond-track">
+
+      <!-- Discover -->
+      <div class="diamond-shape" onclick="scrollToPhase(0)">
+        <svg viewBox="0 0 120 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="60,4 116,40 60,76 4,40" fill="#f00078" opacity="0.85"/>
+        </svg>
+        <span class="diamond-shape-num">1</span>
+        <span class="diamond-shape-label">Discover</span>
+      </div>
+
+      <div class="diamond-connector"></div>
+
+      <!-- Define -->
+      <div class="diamond-shape" onclick="scrollToPhase(1)">
+        <svg viewBox="0 0 120 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="60,4 116,40 60,76 4,40" fill="#c4005f" opacity="0.85"/>
+        </svg>
+        <span class="diamond-shape-num">2</span>
+        <span class="diamond-shape-label">Define</span>
+      </div>
+
+      <div class="diamond-connector"></div>
+
+      <!-- Develop -->
+      <div class="diamond-shape" onclick="scrollToPhase(2)">
+        <svg viewBox="0 0 120 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="60,4 116,40 60,76 4,40" fill="#8a0045" opacity="0.85"/>
+        </svg>
+        <span class="diamond-shape-num">3</span>
+        <span class="diamond-shape-label">Develop</span>
+      </div>
+
+      <div class="diamond-connector"></div>
+
+      <!-- Deliver -->
+      <div class="diamond-shape" onclick="scrollToPhase(3)">
+        <svg viewBox="0 0 120 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="60,4 116,40 60,76 4,40" fill="#1a1a18" opacity="0.9"/>
+        </svg>
+        <span class="diamond-shape-num">4</span>
+        <span class="diamond-shape-label">Deliver</span>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="page-divider"></div>
+
+  <!-- SCROLL HINT -->
+  <div class="scroll-hint">
+    <span class="scroll-arrow">→</span>
+    <span>Scroll through each phase</span>
+  </div>
+
+  <!-- HORIZONTAL PHASES -->
+  <div class="phases-outer" id="phases-outer">
+    <div class="phases-track" id="phases-track">
+
+      <!-- ── PHASE 1: DISCOVER ── -->
+      <div class="phase phase-1">
+        <svg class="phase-watermark" viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg"><polygon points="100,4 196,70 100,136 4,70" fill="#f00078"/></svg>
+        <div class="phase-header">
+          <span class="phase-number">01</span>
+          <div class="phase-title-block">
+            <p class="phase-tag">Discover</p>
+            <h2 class="phase-title">What's the <em>problem?</em></h2>
+          </div>
+        </div>
+
+        <div class="phase-quote">
+          "Most nutrition apps fail the consistency test — too many taps, too much friction for something you're supposed to do every single day."
+        </div>
+
+        <div class="phase-body">
+          <div class="phase-cell">
+            <p class="phase-cell-label">The observation</p>
+            <p class="phase-cell-content">Existing calorie trackers like MyFitnessPal require searching databases, logging each ingredient separately, and navigating multiple screens just to record a meal. The friction makes consistency feel like a chore.</p>
+          </div>
+          <div class="phase-cell">
+            <p class="phase-cell-label">The inspiration</p>
+            <p class="phase-cell-content">Hevy — a gym tracking app — showed that good design can make a tedious habit feel effortless. Its clean, minimal UX became the design benchmark for Chewy: every interaction should feel obvious and fast.</p>
+          </div>
+          <div class="phase-cell wide">
+            <p class="phase-cell-label">Key insights</p>
+            <p class="phase-cell-content">People know what they ate. They don't need a database — they need a place to describe it quickly and move on. The logger should meet them at the level of natural language, not structured data entry.</p>
+            <div class="phase-pills">
+              <span class="phase-pill">Friction kills habits</span>
+              <span class="phase-pill">Natural language is faster</span>
+              <span class="phase-pill">Simplicity drives consistency</span>
+              <span class="phase-pill">Good design is invisible</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── PHASE 2: DEFINE ── -->
+      <div class="phase phase-2">
+        <svg class="phase-watermark" viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg"><polygon points="100,4 196,70 100,136 4,70" fill="#c4005f"/></svg>
+        <div class="phase-header">
+          <span class="phase-number">02</span>
+          <div class="phase-title-block">
+            <p class="phase-tag">Define</p>
+            <h2 class="phase-title">Who are we <em>designing for?</em></h2>
+          </div>
+        </div>
+
+        <div class="phase-quote">
+          "How might we make logging meals so frictionless that it becomes a natural, automatic part of someone's day?"
+        </div>
+
+        <div class="phase-body">
+          <div class="phase-cell">
+            <p class="phase-cell-label">Problem statement</p>
+            <p class="phase-cell-content">People who want to track nutrition struggle to maintain the habit because existing apps demand too much effort per log. The barrier between intention and action is too high.</p>
+          </div>
+          <div class="phase-cell">
+            <p class="phase-cell-label">Target user</p>
+            <p class="phase-cell-content">Health-conscious individuals who have tried calorie tracking before but abandoned it due to the effort involved. They know what they eat — they just need a faster way to record it.</p>
+          </div>
+          <div class="phase-cell">
+            <p class="phase-cell-label">Jobs to be done</p>
+            <p class="phase-cell-content">Log a meal in under 10 seconds. Understand today's nutritional intake at a glance. Build and save meals I eat repeatedly. Review history to understand patterns.</p>
+          </div>
+          <div class="phase-cell">
+            <p class="phase-cell-label">Success criteria</p>
+            <p class="phase-cell-content">A user can log any meal with a single text description. The app handles the macro calculation. The experience feels more like messaging a friend than filling a form.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── PHASE 3: DEVELOP ── -->
+      <div class="phase phase-3">
+        <svg class="phase-watermark" viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg"><polygon points="100,4 196,70 100,136 4,70" fill="#8a0045"/></svg>
+        <div class="phase-header">
+          <span class="phase-number">03</span>
+          <div class="phase-title-block">
+            <p class="phase-tag">Develop</p>
+            <h2 class="phase-title">How do we <em>build it?</em></h2>
+          </div>
+        </div>
+
+        <div class="phase-quote">
+          "Three modes, one interface — Log it, Check it, or turn it into a Recipe."
+        </div>
+
+        <div class="phase-body">
+          <div class="phase-cell">
+            <p class="phase-cell-label">Core interaction</p>
+            <p class="phase-cell-content">A chat-first input bar at the bottom of the screen. Users type a natural language description of their meal. The AI parses it and returns macros. One tap logs it. No forms, no databases, no friction.</p>
+          </div>
+          <div class="phase-cell">
+            <p class="phase-cell-label">Three modes</p>
+            <p class="phase-cell-content"><strong>Log</strong> — instant log with macro return. <strong>Check</strong> — check macros before committing, tap bubble to confirm. <strong>Create</strong> — turn a description into a saved recipe with ingredients and instructions.</p>
+          </div>
+          <div class="phase-cell">
+            <p class="phase-cell-label">Design decisions</p>
+            <p class="phase-cell-content">Warm paper palette instead of clinical white. Typography-led hierarchy. Progress bars instead of pie charts. Minimal tab bar with three clear destinations: Chat, Meals, Profile.</p>
+            <div class="phase-pills">
+              <span class="phase-pill">Warm paper background</span>
+              <span class="phase-pill">Avenir Next typography</span>
+              <span class="phase-pill">Pink-red accent #f00078</span>
+            </div>
+          </div>
+          <div class="phase-cell">
+            <p class="phase-cell-label">Iterations</p>
+            <p class="phase-cell-content">Started with a dark theme → moved to warm light palette for legibility and warmth. Removed Create button from main input to reduce cognitive load. Added long-press to convert logged meals to recipes.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── PHASE 4: DELIVER ── -->
+      <div class="phase phase-4">
+        <svg class="phase-watermark" viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg"><polygon points="100,4 196,70 100,136 4,70" fill="#f5f3ee"/></svg>
+        <div class="phase-header">
+          <span class="phase-number">04</span>
+          <div class="phase-title-block">
+            <p class="phase-tag">Deliver</p>
+            <h2 class="phase-title">What did we <em>ship?</em></h2>
+          </div>
+        </div>
+
+        <div class="phase-quote">
+          "A working end-to-end product — from chat to macros, recipes to history — built solo across product, design, and engineering."
+        </div>
+
+        <div class="phase-body">
+          <div class="phase-cell">
+            <p class="phase-cell-label">Final product</p>
+            <p class="phase-cell-content">A React Native app with three tabs: a chat-first food logger, a recipe library, and a profile with daily goals, meal history, calendar, and a 7-day chart. Backed by Supabase and a custom AI parsing function.</p>
+          </div>
+          <div class="phase-cell">
+            <p class="phase-cell-label">Technical outcomes</p>
+            <p class="phase-cell-content">End-to-end authentication flow. Real-time macro tracking. AI-powered meal parsing via Supabase Edge Functions. Cross-session goal persistence. Recipe CRUD with ingredient management.</p>
+          </div>
+          <div class="phase-cell">
+            <p class="phase-cell-label">Learnings</p>
+            <p class="phase-cell-content">Building end-to-end alone forces prioritisation. Every feature has a cost — in time, complexity, and UX clarity. The biggest lesson: constraint is a creative tool. Less surface area, more depth.</p>
+          </div>
+          <div class="phase-cell">
+            <p class="phase-cell-label">What's next</p>
+            <p class="phase-cell-content">Photo-to-log via camera input. Audio description mode. Meal sharing between users. A more refined onboarding that communicates the chat-first model before the user's first session.</p>
+            <div class="phase-pills">
+              <span class="phase-pill">Photo input</span>
+              <span class="phase-pill">Audio logging</span>
+              <span class="phase-pill">Meal sharing</span>
+              <span class="phase-pill">Onboarding</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- PROGRESS DOTS -->
+  <div class="progress-dots" id="progress-dots">
+    <div class="dot active" onclick="scrollToPhase(0)"></div>
+    <div class="dot" onclick="scrollToPhase(1)"></div>
+    <div class="dot" onclick="scrollToPhase(2)"></div>
+    <div class="dot" onclick="scrollToPhase(3)"></div>
+  </div>
+
+  <script>
+    const outer = document.getElementById('phases-outer');
+    const dots = document.querySelectorAll('.dot');
+    let activePhase = 0;
+
+    function scrollToPhase(i) {
+      const phase = document.querySelectorAll('.phase')[i];
+      if (!phase) return;
+      outer.scrollTo({ left: phase.offsetLeft - outer.offsetLeft, behavior: 'smooth' });
+    }
+
+    function updateDots() {
+      const phases = document.querySelectorAll('.phase');
+      const scrollLeft = outer.scrollLeft;
+      let closest = 0;
+      let minDist = Infinity;
+      phases.forEach((p, i) => {
+        const dist = Math.abs(p.offsetLeft - outer.offsetLeft - scrollLeft);
+        if (dist < minDist) { minDist = dist; closest = i; }
+      });
+      if (closest !== activePhase) {
+        dots[activePhase].classList.remove('active');
+        dots[closest].classList.add('active');
+        activePhase = closest;
+      }
+    }
+
+    outer.addEventListener('scroll', updateDots, { passive: true });
+
+    // Drag to scroll
+    let isDown = false, startX, scrollStart;
+    outer.addEventListener('mousedown', (e) => {
+      isDown = true; startX = e.pageX; scrollStart = outer.scrollLeft;
+      outer.classList.add('grabbing');
+    });
+    document.addEventListener('mouseup', () => { isDown = false; outer.classList.remove('grabbing'); });
+    document.addEventListener('mousemove', (e) => {
+      if (!isDown) return;
+      e.preventDefault();
+      outer.scrollLeft = scrollStart - (e.pageX - startX);
+    });
+  </script>
+
+</body>
+</html>
