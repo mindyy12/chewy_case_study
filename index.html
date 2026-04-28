@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chewy — Case Study</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink: #f5f3ee;
+      --ink-2: #a0a09a;
+      --ink-3: #5a5a56;
+      --ink-4: #3a3a38;
+      --paper: #0e0e0c;
+      --paper-2: #1a1a18;
+      --paper-3: #2a2a28;
+      --accent: #f00078;
+      --serif: 'DM Serif Display', Georgia, serif;
+      --sans: 'DM Sans', system-ui, sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--sans);
+      background: var(--paper);
+      color: var(--ink);
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow: hidden;
+      height: 100vh;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: #0e0e0c; border-bottom: 1px solid var(--paper-2);
+      padding: 0 2rem; display: flex; align-items: center;
+      justify-content: space-between; height: 56px;
+    }
+    .nav-logo { font-family: var(--serif); font-size: 1.3rem; color: var(--accent); text-decoration: none; letter-spacing: -0.02em; }
+    .nav-links { display: flex; gap: 1.5rem; list-style: none; }
+    .nav-links a { font-size: 0.75rem; font-weight: 400; color: var(--ink-2); text-decoration: none; letter-spacing: 0.08em; text-transform: uppercase; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--accent); }
+
+    /* ── HORIZONTAL SCROLL CONTAINER ── */
+    .panels-outer {
+      position: fixed;
+      top: 56px;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      overflow-x: scroll;
+      overflow-y: hidden;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      cursor: grab;
+      display: flex;
+    }
+    .panels-outer::-webkit-scrollbar { display: none; }
+    .panels-outer.grabbing { cursor: grabbing; }
+
+    .panels-track {
+      display: flex;
+      height: 100%;
+    }
+
+    /* ── PANEL (shared) ── */
+    .panel {
+      width: 100vw;
+      flex-shrink: 0;
+      scroll-snap-align: start;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 3rem 2rem 5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .panel-inner {
+      max-width: 860px;
+      margin: 0 auto;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 2.5rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── HERO PANEL ── */
+    .panel-hero { }
+    .hero-eyebrow {
+      font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 1.5rem;
+    }
+    .hero-title {
+      font-family: var(--serif);
+      font-size: clamp(3rem, 7vw, 5.5rem);
+      line-height: 1.0; letter-spacing: -0.03em; color: #f5f3ee;
+      margin-bottom: 1.5rem;
+    }
+    .hero-title em { font-style: italic; color: var(--accent); }
+    .hero-desc {
+      font-size: 1rem; font-weight: 300; color: var(--ink-2);
+      max-width: 520px; line-height: 1.75; margin-bottom: 2rem;
+    }
+    .hero-meta { display: flex; gap: 2.5rem; flex-wrap: wrap; }
+    .hero-meta-label { font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-4); margin-bottom: 4px; }
+    .hero-meta-value { font-size: 0.875rem; color: var(--ink-2); font-weight: 300; }
+
+    /* ── PHASE PANELS ── */
+    .phase-header { display: flex; align-items: baseline; gap: 16px; }
+    .phase-number {
+      font-family: var(--serif); font-size: 4rem; line-height: 1;
+      letter-spacing: -0.04em; font-style: italic; flex-shrink: 0;
+      opacity: 0.4; color: var(--accent);
+    }
+    .phase-tag { font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 4px; font-weight: 500; color: var(--accent); }
+    .phase-title { font-family: var(--serif); font-size: clamp(1.8rem, 4vw, 2.8rem); line-height: 1.1; letter-spacing: -0.02em; color: #f5f3ee; }
+    .phase-title em { font-style: italic; }
+
+    .phase-quote {
+      border-left: 2px solid var(--accent); padding: 1rem 1.5rem;
+      font-family: var(--serif); font-size: 1.1rem; font-style: italic;
+      color: var(--ink-2); line-height: 1.6;
+    }
+
+    .phase-body { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: transparent; border: 1px solid var(--paper-3); border-radius: 12px; overflow: hidden; }
+    .phase-cell { background: transparent; padding: 1.5rem; border: 1px solid var(--paper-3); }
+    .phase-cell.wide { grid-column: span 2; }
+    .phase-cell-label { font-size: 0.65rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-2); margin-bottom: 0.75rem; }
+    .phase-cell-content { font-size: 0.875rem; font-weight: 300; color: #8a8a84; line-height: 1.7; }
+
+    .phase-pills { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 0.75rem; }
+    .phase-pill { font-size: 0.68rem; letter-spacing: 0.04em; padding: 4px 10px; border-radius: 100px; border: 1px solid var(--paper-3); color: var(--ink-2); background: transparent; }
+
+    /* ── WATERMARK ── */
+    .panel-watermark {
+      position: absolute; top: 50%; left: 50%;
+      width: 150%; opacity: 0.06; pointer-events: none; z-index: 0;
+    }
+    .panel-1 .panel-watermark, .panel-3 .panel-watermark { transform: translate(0%, -50%); }
+    .panel-2 .panel-watermark, .panel-4 .panel-watermark { transform: translate(-100%, -50%); }
+
+    /* ── PROGRESS DOTS ── */
+    .progress-dots {
+      position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%);
+      display: flex; gap: 8px; z-index: 200;
+    }
+    .dot { width: 6px; height: 6px; border-radius: 100px; background: var(--paper-3); transition: all 0.3s; cursor: pointer; }
+    .dot.active { width: 20px; background: var(--accent); }
+
+    /* ── SCROLL HINT ── */
+    .scroll-hint {
+      position: fixed; bottom: 1.5rem; right: 2rem;
+      display: flex; align-items: center; gap: 8px;
+      font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--ink-4); z-index: 200;
+      transition: opacity 0.4s;
+    }
+    .scroll-arrow { animation: nudge 1.6s ease-in-out infinite; display: inline-block; }
+    @keyframes nudge { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(5px); } }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+
+    @media (max-width: 600px) {
+      nav { padding: 0 1rem; }
+      .panel { padding: 2rem 1rem 5rem; }
+      .phase-body { grid-template-columns: 1fr; }
+      .phase-cell.wide { grid-column: span 1; }
+      .hero-title { font-size: clamp(2.2rem, 9vw, 3.5rem); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="nav-logo">chewy</a>
+    <ul class="nav-links">
+      <li><a href="https://raw.githubusercontent.com/mindyy12/chewy_devlog/main/DEVLOG.md" target="_blank">Dev log →</a></li>
+      <li><a href="https://www.figma.com/design/MR2bZlqtiGsHlx2O30oecb/Chewy-Design?node-id=0-1&t=vcE4tWafYvVCkoCU-1" target="_blank">Design kit →</a></li>
+    </ul>
+  </nav>
+
+  <!-- PROGRESS DOTS -->
+  <div class="progress-dots" id="progress-dots">
+    <div class="dot active" onclick="scrollToPanel(0)"></div>
+    <div class="dot" onclick="scrollToPanel(1)"></div>
+    <div class="dot" onclick="scrollToPanel(2)"></div>
+    <div class="dot" onclick="scrollToPanel(3)"></div>
+    <div class="dot" onclick="scrollToPanel(4)"></div>
+  </div>
+
+  <!-- SCROLL HINT -->
+  <div class="scroll-hint" id="scroll-hint">
+    <span class="scroll-arrow">→</span>
+    <span>drag to scroll</span>
+  </div>
+
+  <!-- PANELS -->
+  <div class="panels-outer" id="panels-outer">
+    <div class="panels-track">
+
+      <!-- ── PANEL 0: HERO ── -->
+      <div class="panel panel-hero">
+        <div class="panel-inner">
+          <p class="hero-eyebrow">Case study · chewy</p>
+          <h1 class="hero-title">Chewy <em>— The Tracker<br>Habit Hacker</em></h1>
+          <p class="hero-desc">
+            A chat-first calorie tracker built around one idea: logging what you eat should be as easy as describing it. This is the end-to-end story.
+          </p>
+          <div class="hero-meta">
+            <div>
+              <p class="hero-meta-label">Solo Project By</p>
+              <p class="hero-meta-value">Mindy Liu</p>
+            </div>
+            <div>
+              <p class="hero-meta-label">Status</p>
+              <p class="hero-meta-value">Developing — 04.26</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── PANEL 1: DISCOVER ── -->
+      <div class="panel panel-1">
+        <svg class="panel-watermark" viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg"><polygon points="100,4 196,70 100,136 4,70" fill="#f00078"/></svg>
+        <div class="panel-inner">
+          <div class="phase-header">
+            <span class="phase-number">01</span>
+            <div>
+              <p class="phase-tag">Discover</p>
+              <h2 class="phase-title">What's the <em>problem?</em></h2>
+            </div>
+          </div>
+          <div class="phase-quote">"When friction is low, habits are easy." — James Clear, Atomic Habits</div>
+          <div class="phase-body">
+            <div class="phase-cell">
+              <p class="phase-cell-label">The observation</p>
+              <p class="phase-cell-content">Existing calorie trackers like MyFitnessPal require searching databases, logging each ingredient separately, and navigating multiple screens just to record a meal. The friction makes consistency feel like a chore.</p>
+            </div>
+            <div class="phase-cell">
+              <p class="phase-cell-label">The inspiration</p>
+              <p class="phase-cell-content">I ultimately sought a solution to my own problem — tracking macros consistently. I admired the simplicity built into my favourite apps like Hevy and Goodnotes and thought it could be replicated in the macro-tracking space.</p>
+            </div>
+            <div class="phase-cell wide">
+              <p class="phase-cell-label">Key insights</p>
+              <p class="phase-cell-content">> Friends who track macros use AI chatbots, Google Docs and the Notes app, finding macros through online databases and web searches.<br>> Apps with simple UI interfaces dominate as a method for tracking habitual tasks like notes apps and Hevy.</p>
+              <div class="phase-pills">
+                <span class="phase-pill">Friction kills habits</span>
+                <span class="phase-pill">Natural language is faster</span>
+                <span class="phase-pill">Simplicity drives consistency</span>
+                <span class="phase-pill">Good design exists all around us</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── PANEL 2: DEFINE ── -->
+      <div class="panel panel-2">
+        <svg class="panel-watermark" viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg"><polygon points="100,4 196,70 100,136 4,70" fill="#f00078"/></svg>
+        <div class="panel-inner">
+          <div class="phase-header">
+            <span class="phase-number">02</span>
+            <div>
+              <p class="phase-tag">Define</p>
+              <h2 class="phase-title">Who are we <em>designing for?</em></h2>
+            </div>
+          </div>
+          <div class="phase-quote">"How might we make logging meals so frictionless that it becomes a natural, automatic part of someone's day?"</div>
+          <div class="phase-body">
+            <div class="phase-cell">
+              <p class="phase-cell-label">Problem statement</p>
+              <p class="phase-cell-content">People who want to track nutrition struggle to maintain the habit because existing apps demand too much effort per log. The barrier between intention and action is too high. They resort to oversimplistic methods that lack accuracy and depth for historic logging.</p>
+            </div>
+            <div class="phase-cell">
+              <p class="phase-cell-label">Target user</p>
+              <p class="phase-cell-content">Health-conscious individuals who have tried conventional tracking methods before.<br><br>Age demographic: 17–50<br><br>Primary use-case: Users logging individual meals within 10 seconds through a single interface, being able to reuse historic inputs and review history to understand patterns.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── PANEL 3: DEVELOP ── -->
+      <div class="panel panel-3">
+        <svg class="panel-watermark" viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg"><polygon points="100,4 196,70 100,136 4,70" fill="#f00078"/></svg>
+        <div class="panel-inner">
+          <div class="phase-header">
+            <span class="phase-number">03</span>
+            <div>
+              <p class="phase-tag">Develop</p>
+              <h2 class="phase-title">How are we <em>building it?</em></h2>
+            </div>
+          </div>
+          <!-- <div class="phase-quote">Iterating, testing, iterating and testing.</div> -->
+          <div class="phase-body">
+            <div class="phase-cell">
+              <p class="phase-cell-label">Core interaction</p>
+              <p class="phase-cell-content">A chat-first input bar at the bottom of the screen. Users type a natural language description of their meal. The AI parses it and returns macros. One tap logs it.</p>
+              <div class="phase-pills">
+                <span class="phase-pill">Chat-bot Meal Processing</span>
+                <span class="phase-pill">Recipe Book</span>
+                <span class="phase-pill">Historic Tracking</span>
+              </div>
+            </div>
+            <div class="phase-cell">
+              <p class="phase-cell-label">Major iterations</p>
+              <p class="phase-cell-content">> Started dark theme → moved to warm light palette to emulate wellbeing essence.<br>> Removed Create button from main input to reduce cognitive load + added long-press to convert logged meals to recipes.<br>> Merged tabs into dashboard then combined with profile to streamline progress review.</p>
+            </div>
+            <div class="phase-cell">
+              <p class="phase-cell-label">Dev decisions</p>
+              <p class="phase-cell-content"><strong>Groq AI API</strong> — Fast inference layer with free tier and integratable LLM features.<br><strong>Supabase</strong> — Strong backend with built-in verification, databases and storage.<br><strong>React Native</strong> — One codebase for iOS and Android with fast deployment through Expo.</p>
+            </div>
+            <div class="phase-cell">
+              <p class="phase-cell-label">Design decisions</p>
+              <p class="phase-cell-content"><strong>Colours</strong> — Warm paper palette instead of clinical white. Accent colour based off apple logo.<br><strong>Typography</strong> — High readability with a typography-led hierarchy.<br><strong>Format</strong> — Minimal tab bar with three clear destinations: Chat, Meals, Profile.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── PANEL 4: DELIVER ── -->
+      <div class="panel panel-4">
+        <svg class="panel-watermark" viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg"><polygon points="100,4 196,70 100,136 4,70" fill="#f00078"/></svg>
+        <div class="panel-inner">
+          <div class="phase-header">
+            <span class="phase-number">04</span>
+            <div>
+              <p class="phase-tag">Deliver</p>
+              <h2 class="phase-title">What are we at <em>now?</em></h2>
+            </div>
+          </div>
+          <div class="phase-quote">Three modes, one interface — Log it, Check it, or turn it into a Recipe.</div>
+          <div class="phase-body">
+            <div class="phase-cell">
+              <p class="phase-cell-label">Final product</p>
+              <p class="phase-cell-content">A React Native app with three tabs: a chat-first food logger, a recipe library, and a profile with daily goals, meal history, calendar, and a 7-day chart. Backed by Supabase and a custom AI parsing function.</p>
+            </div>
+            <div class="phase-cell">
+              <p class="phase-cell-label">What's next</p>
+              <p class="phase-cell-content">> Photo-to-log via camera input.<br>> Audio description mode.<br>> Meal sharing between users.<br>> A more refined onboarding that personalises goals.</p>
+            </div>
+            <div class="phase-cell wide">
+              <p class="phase-cell-label">Reflection</p>
+              <p class="phase-cell-content">When I first started this project I thought it was a pretty lukewarm idea. The more I looked into the problem, the more realistic it became as a solution. The product hinges on simplicity and naturally my first thought at a solution was in fact the simplest idea. I've learnt a lot from the project — new languages, software tools, where best to design, develop and deploy, and most significantly I've built a skill for product-thinking. There's more to come from this project as I use it to explore LLMs and AI integration, but for now this is what I've chewed up.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    const outer = document.getElementById('panels-outer');
+    const dots = document.querySelectorAll('.dot');
+    const hint = document.getElementById('scroll-hint');
+    let active = 0;
+
+    function scrollToPanel(i) {
+      const panels = document.querySelectorAll('.panel');
+      if (!panels[i]) return;
+      outer.scrollTo({ left: panels[i].offsetLeft, behavior: 'smooth' });
+    }
+
+    function updateDots() {
+      const panels = document.querySelectorAll('.panel');
+      const scrollLeft = outer.scrollLeft;
+      let closest = 0, minDist = Infinity;
+      panels.forEach((p, i) => {
+        const dist = Math.abs(p.offsetLeft - scrollLeft);
+        if (dist < minDist) { minDist = dist; closest = i; }
+      });
+      if (closest !== active) {
+        dots[active].classList.remove('active');
+        dots[closest].classList.add('active');
+        active = closest;
+      }
+      // hide hint after first scroll
+      hint.style.opacity = scrollLeft > 50 ? '0' : '1';
+    }
+
+    outer.addEventListener('scroll', updateDots, { passive: true });
+
+    // Drag to scroll
+    let isDown = false, startX, scrollStart;
+    outer.addEventListener('mousedown', (e) => {
+      isDown = true; startX = e.pageX; scrollStart = outer.scrollLeft;
+      outer.classList.add('grabbing');
+    });
+    document.addEventListener('mouseup', () => { isDown = false; outer.classList.remove('grabbing'); });
+    document.addEventListener('mousemove', (e) => {
+      if (!isDown) return;
+      e.preventDefault();
+      outer.scrollLeft = scrollStart - (e.pageX - startX);
+    });
+
+    // Arrow key navigation
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') scrollToPanel(active + 1);
+      if (e.key === 'ArrowLeft') scrollToPanel(active - 1);
+    });
+  </script>
+
+</body>
+</html>
