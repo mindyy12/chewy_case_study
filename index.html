@@ -156,15 +156,15 @@
     }
     .dot { width: 6px; height: 6px; border-radius: 100px; background: var(--paper-3); transition: all 0.3s; cursor: pointer; }
     .dot.active { width: 20px; background: var(--accent); }
-
-    /* ── SCROLL HINT ── */
+    /* 
+    ── SCROLL HINT ──
     .scroll-hint {
       position: fixed; bottom: 1.5rem; right: 2rem;
       display: flex; align-items: center; gap: 8px;
       font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase;
       color: var(--ink-4); z-index: 200;
       transition: opacity 0.4s;
-    }
+    } */
     .scroll-arrow { animation: nudge 1.6s ease-in-out infinite; display: inline-block; }
     @keyframes nudge { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(5px); } }
     @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
@@ -182,7 +182,7 @@
 
   <!-- NAV -->
   <nav>
-    <a href="#" class="nav-logo">chewy</a>
+    <a href="#"><img src="/media/text_mark_pk.png" alt="chewy" style="height: 28px; display: block;"></a>
     <ul class="nav-links">
       <li><a href="https://raw.githubusercontent.com/mindyy12/chewy_devlog/main/DEVLOG.md" target="_blank">Dev log →</a></li>
       <li><a href="https://www.figma.com/design/MR2bZlqtiGsHlx2O30oecb/Chewy-Design?node-id=0-1&t=vcE4tWafYvVCkoCU-1" target="_blank">Design kit →</a></li>
@@ -198,11 +198,11 @@
     <div class="dot" onclick="scrollToPanel(4)"></div>
   </div>
 
-  <!-- SCROLL HINT -->
+  <!-- SCROLL HINT
   <div class="scroll-hint" id="scroll-hint">
     <span class="scroll-arrow">→</span>
     <span>drag to scroll</span>
-  </div>
+  </div> -->
 
   <!-- PANELS -->
   <div class="panels-outer" id="panels-outer">
@@ -210,11 +210,14 @@
 
       <!-- ── PANEL 0: HERO ── -->
       <div class="panel panel-hero">
+        <svg class="panel-watermark" viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg">
+          <image href="/media/pic_mark_opq.png" width="200" height="140" opacity="0.1" />
+        </svg>
         <div class="panel-inner">
           <p class="hero-eyebrow">Case study · chewy</p>
           <h1 class="hero-title">Chewy <em>— The Tracker<br>Habit Hacker</em></h1>
           <p class="hero-desc">
-            A chat-first calorie tracker built around one idea: logging what you eat should be as easy as describing it. This is the end-to-end story.
+            A chat-first calorie tracker built around one idea: logging what you eat should be as easy as describing it. This is the end-to-(almost)-end story.
           </p>
           <div class="hero-meta">
             <div>
