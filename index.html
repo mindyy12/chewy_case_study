@@ -7,6 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Lemon&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -42,7 +43,7 @@
       padding: 0 2rem; display: flex; align-items: center;
       justify-content: space-between; height: 56px;
     }
-    .nav-logo { font-family: var(--serif); font-size: 1.3rem; color: var(--accent); text-decoration: none; letter-spacing: -0.02em; }
+    .nav-logo { font-family: 'Lemon', serif; font-size: 1.3rem; color: var(--accent); text-decoration: none; letter-spacing: -0.02em; }
     .nav-links { display: flex; gap: 1.5rem; list-style: none; }
     .nav-links a { font-size: 0.75rem; font-weight: 400; color: var(--ink-2); text-decoration: none; letter-spacing: 0.08em; text-transform: uppercase; transition: color 0.2s; }
     .nav-links a:hover { color: var(--accent); }
@@ -101,7 +102,7 @@
       color: var(--accent); margin-bottom: 1.5rem;
     }
     .hero-title {
-      font-family: var(--serif);
+      font-family: 'Lemon', serif;
       font-size: clamp(3rem, 7vw, 5.5rem);
       line-height: 1.0; letter-spacing: -0.03em; color: #f5f3ee;
       margin-bottom: 1.5rem;
@@ -118,17 +119,17 @@
     /* ── PHASE PANELS ── */
     .phase-header { display: flex; align-items: baseline; gap: 16px; }
     .phase-number {
-      font-family: var(--serif); font-size: 4rem; line-height: 1;
+      font-family: 'Lemon', serif; font-size: 4rem; line-height: 1;
       letter-spacing: -0.04em; font-style: italic; flex-shrink: 0;
       opacity: 0.4; color: var(--accent);
     }
     .phase-tag { font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 4px; font-weight: 500; color: var(--accent); }
-    .phase-title { font-family: var(--serif); font-size: clamp(1.8rem, 4vw, 2.8rem); line-height: 1.1; letter-spacing: -0.02em; color: #f5f3ee; }
+    .phase-title { font-family: 'Lemon', serif; font-size: clamp(1.8rem, 4vw, 2.8rem); line-height: 1.1; letter-spacing: -0.02em; color: #f5f3ee; }
     .phase-title em { font-style: italic; }
 
     .phase-quote {
       border-left: 2px solid var(--accent); padding: 1rem 1.5rem;
-      font-family: var(--serif); font-size: 1.1rem; font-style: italic;
+      font-family: 'Lemon', serif; font-size: 1.1rem; font-style: italic;
       color: var(--ink-2); line-height: 1.6;
     }
 
@@ -144,10 +145,11 @@
     /* ── WATERMARK ── */
     .panel-watermark {
       position: absolute; top: 50%; left: 50%;
-      width: 150%; opacity: 0.06; pointer-events: none; z-index: 0;
+      width: 150%; opacity: 0.8; pointer-events: none; z-index: 0;
     }
-    .panel-1 .panel-watermark, .panel-3 .panel-watermark { transform: translate(0%, -50%); }
-    .panel-2 .panel-watermark, .panel-4 .panel-watermark { transform: translate(-100%, -50%); }
+    .panel-hero .panel-watermark { opacity: 0.6; transform: translate(-15%, -30%); }
+    .panel-1 .panel-watermark, .panel-3 .panel-watermark { transform: translate(-30%, -50%); }
+    .panel-2 .panel-watermark, .panel-4 .panel-watermark { transform: translate(-70%, -50%); }
 
     /* ── PROGRESS DOTS ── */
     .progress-dots {
@@ -211,11 +213,11 @@
       <!-- ── PANEL 0: HERO ── -->
       <div class="panel panel-hero">
         <svg class="panel-watermark" viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg">
-          <image href="/media/pic_mark_opq.png" width="200" height="140" opacity="0.1" />
+          <image href="/media/pic_mark_gy.png" width="150" height="105" opacity="0.1" />
         </svg>
         <div class="panel-inner">
           <p class="hero-eyebrow">Case study · chewy</p>
-          <h1 class="hero-title">Chewy <em>— The Tracker<br>Habit Hacker</em></h1>
+          <h1 class="hero-title">Chewy <em>— The Tracker,<br>Habit Hacker</em></h1>
           <p class="hero-desc">
             A chat-first calorie tracker built around one idea: logging what you eat should be as easy as describing it. This is the end-to-(almost)-end story.
           </p>
@@ -234,7 +236,9 @@
 
       <!-- ── PANEL 1: DISCOVER ── -->
       <div class="panel panel-1">
-        <svg class="panel-watermark" viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg"><polygon points="100,4 196,70 100,136 4,70" fill="#f00078"/></svg>
+        <svg class="panel-watermark" viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg">
+          <image href="media/diamond_left.png" width="200" height="140" opacity="0.1" />
+        </svg>
         <div class="panel-inner">
           <div class="phase-header">
             <span class="phase-number">01</span>
@@ -269,7 +273,9 @@
 
       <!-- ── PANEL 2: DEFINE ── -->
       <div class="panel panel-2">
-        <svg class="panel-watermark" viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg"><polygon points="100,4 196,70 100,136 4,70" fill="#f00078"/></svg>
+        <svg class="panel-watermark" viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg">
+          <image href="media/diamond_right.png" width="200" height="140" opacity="0.1" />
+        </svg>
         <div class="panel-inner">
           <div class="phase-header">
             <span class="phase-number">02</span>
@@ -294,7 +300,9 @@
 
       <!-- ── PANEL 3: DEVELOP ── -->
       <div class="panel panel-3">
-        <svg class="panel-watermark" viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg"><polygon points="100,4 196,70 100,136 4,70" fill="#f00078"/></svg>
+        <svg class="panel-watermark" viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg">
+          <image href="media/diamond_left.png" width="200" height="140" opacity="0.1" />
+        </svg>
         <div class="panel-inner">
           <div class="phase-header">
             <span class="phase-number">03</span>
@@ -332,7 +340,9 @@
 
       <!-- ── PANEL 4: DELIVER ── -->
       <div class="panel panel-4">
-        <svg class="panel-watermark" viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg"><polygon points="100,4 196,70 100,136 4,70" fill="#f00078"/></svg>
+        <svg class="panel-watermark" viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg">
+          <image href="media/diamond_right.png" width="200" height="140" opacity="0.1" />
+        </svg>
         <div class="panel-inner">
           <div class="phase-header">
             <span class="phase-number">04</span>
