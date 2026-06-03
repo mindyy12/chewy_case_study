@@ -50,11 +50,10 @@
     .nav-links a:hover { color: var(--accent); }
 
     /* ── HORIZONTAL SCROLL CONTAINER ── */
-    /* No scroll-snap here — GSAP handles all of that */
     .panels-outer {
       width: 100%;
       overflow: hidden;
-      margin-top: 56px; /* offset for fixed nav */
+      margin-top: 56px;
     }
 
     .panels-track {
@@ -111,7 +110,7 @@
     .phase-number {
       font-family: 'Lemon', serif; font-size: 4rem; line-height: 1;
       letter-spacing: -0.04em; flex-shrink: 0;
-      opacity: 0.4; color: var(--accent);
+      opacity: 1; color: var(--accent);
     }
     .phase-tag { font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 4px; font-weight: 500; color: var(--accent); }
     .phase-title { font-family: 'Lemon', serif; font-size: clamp(1.8rem, 4vw, 2.8rem); line-height: 1.1; letter-spacing: -0.02em; color: #f5f3ee; }
@@ -215,7 +214,7 @@
       <!-- ── PANEL 1: DISCOVER ── -->
       <div class="panel panel-1">
         <svg class="panel-watermark" viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg">
-          <image href="media/diamond_left1.png" width="200" height="140" opacity="0.1" />
+          <image href="media/diamond_left_g.png" width="200" height="140" opacity="0.1" />
         </svg>
         <div class="panel-inner">
           <div class="phase-header">
@@ -252,7 +251,7 @@
       <!-- ── PANEL 2: DEFINE ── -->
       <div class="panel panel-2">
         <svg class="panel-watermark" viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg">
-          <image href="media/diamond_right1.png" width="200" height="140" opacity="0.1" />
+          <image href="media/diamond_right_g.png" width="200" height="140" opacity="0.1" />
         </svg>
         <div class="panel-inner">
           <div class="phase-header">
@@ -279,7 +278,7 @@
       <!-- ── PANEL 3: DEVELOP ── -->
       <div class="panel panel-3">
         <svg class="panel-watermark" viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg">
-          <image href="media/diamond_left1.png" width="200" height="140" opacity="0.1" />
+          <image href="media/diamond_left_g.png" width="200" height="140" opacity="0.1" />
         </svg>
         <div class="panel-inner">
           <div class="phase-header">
@@ -318,7 +317,7 @@
       <!-- ── PANEL 4: DELIVER ── -->
       <div class="panel panel-4">
         <svg class="panel-watermark" viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg">
-          <image href="media/diamond_right1.png" width="200" height="140" opacity="0.1" />
+          <image href="media/diamond_right_g.png" width="200" height="140" opacity="0.1" />
         </svg>
         <div class="panel-inner">
           <div class="phase-header">
@@ -363,8 +362,6 @@
       index = Math.max(0, Math.min(index, numPanels - 1));
       isAnimating = true;
 
-      // Calculate target scroll position
-      // Each panel occupies an equal portion of the scroll range
       const st = tween.scrollTrigger;
       const scrollPerPanel = (st.end - st.start) / (numPanels - 1);
       const target = st.start + index * scrollPerPanel;
@@ -376,15 +373,12 @@
         onComplete: () => { isAnimating = false; }
       });
 
-      // Update dots immediately on click
       dots[activeDot].classList.remove("active");
       dots[index].classList.add("active");
       activeDot = index;
     }
 
-    // Set track width and create the tween
-    const totalScrollWidth = numPanels * window.innerWidth;
-    gsap.set("#panels-track", { width: totalScrollWidth });
+    gsap.set("#panels-track", { width: numPanels * window.innerWidth });
 
     const tween = gsap.to("#panels-track", {
       x: () => -((numPanels - 1) * window.innerWidth),
@@ -395,12 +389,7 @@
         scrub: 0.5,
         start: "top top",
         end: () => "+=" + (numPanels - 1) * window.innerWidth,
-        snap: {
-          snapTo: 1 / (numPanels - 1),
-          duration: { min: 0.3, max: 0.5 },
-          delay: 0.05,
-          ease: "power1.inOut"
-        },
+        // snap removed — free scrolling only
         onUpdate: (self) => {
           if (isAnimating) return;
           const index = Math.round(self.progress * (numPanels - 1));
